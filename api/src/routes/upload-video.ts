@@ -25,8 +25,8 @@ export async function uploadVideoRoute(api:FastifyInstance){
 
         const extension = path.extname(data.filename)
 
-        if(extension!='.mp4'){
-            return res.status(400).send({error:'Invalid input type, please upload a MP4.'})
+        if(extension!=='.mp3'){
+            return res.status(400).send({error:'Invalid input type, please upload a MP3.'})
         }
 
         const fileBaseName = path.basename(data.filename, extension)
@@ -34,7 +34,7 @@ export async function uploadVideoRoute(api:FastifyInstance){
 
         const uploadDir = path.resolve(__dirname, '../../tmp', fileUploadName)
 
-        await pump(data.file, fs.createWriteStream(data.filename))
+        await pump(data.file, fs.createWriteStream(uploadDir))
 
         const video = await prisma.video.create({
             data: {
